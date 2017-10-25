@@ -3,16 +3,18 @@ This is meant to work with [qdriverstation](https://github.com/FRC-Utilities/QDr
 
 This is a simple robot project written in python 3.
 
-Basic program structure is to have 2 main opertion modes. The first being a Telo and the second automimous. The defualt will be the telo.
-The program asumes that the user running it has access to its home dir '~'. The program becomes on gaint while loop. I know this is bad for most
-things, but for this it should be fine. Defs and Class shell start with a lowercase and conform to camel case there after. Varables shall start 
+Basic program structure is to have 2 main opertion modes. The first being a Telo and the second automimous.
+The defualt will be the telo. The program asumes that the user running it has access to its home dir '~'. 
+The program becomes on gaint while loop. I know this is bad for most things, but for this it should be fine.
+Defs and Class shell start with a lowercase and conform to camel case there after. Varables shall start 
 wtih a capital and shall conform to camel case there affer. 
 
 Example:
 def: writeCode()
 var: RedLed
 
-One of the goals is to get this to work with the qdriverstation both the desktop and phone version. This will allow the robot to be controlled
+One of the goals is to get this to work with the qdriverstation both the desktop and phone version. This will 
+allow the robot to be controlled
 from a windows, mac, Linux, bsd, android phone or other operating system that can compile qt version 5.
 =======================================Status LED Program =====================================
 This needs to be started at system boot. (refer to rc.locol) Make sure the procces is forked.  
@@ -44,12 +46,13 @@ Telo: 3 minutes
 
 
 
-=======================================Complaints agains python ==============================
+=======================================Complaints agains python ==
 
-There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so much info into comments around my code.
+There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so much 
+info into comments around my code.
 I wonder will this slow python down?
 
-========================================NET==============================================
+========================================NET=================
 IF using wifi, it must have a connection at startup.
 adding this to /etc/network/interfaces should make it work
 
@@ -59,7 +62,7 @@ iface wlan0 inet dhcp
         wpa-psk "password"
 
 
-======================================= rc.local =============================================
+======================================= rc.local ===========
 We need to edit rc.local to get are program to start up with the system
 sudo nano /etc/rc.local
 
@@ -69,7 +72,7 @@ if the program is likely to run in a infinate loop or not exit put '&' and the e
 process.
 /home/pi/myRobot/src/status.py &
 
-======================================= Sources ==============================================
+======================================= Sources ==========
 
 https://pythonhosted.org/triangula/config.html
 
