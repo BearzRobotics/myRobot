@@ -8,7 +8,7 @@ sudo ufw allow 1150/udp
 sudo ufw allow 1110/udp
 
 # installs python libs
-sudo pip3 install pyfrc
+sudo pip3 install pyfrc pygame psutils
 
 # setup Mdns
 sudo apt install avahi-daemon
