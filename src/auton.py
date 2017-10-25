@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+#KNOW ALL MEN BY THESE PRESENTS: 'i': man [Dakota James Owen Keeler]
+#Copyright this software in the year of our lord 2017 under the GNU
+#Public License version 3.
+#Contact: bearzrobotics@gmail.com
+
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or

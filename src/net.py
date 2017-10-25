@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+#KNOW ALL MEN BY THESE PRESENTS: 'i': man [Dakota James Owen Keeler]
+#Copyright this software in the year of our lord 2017 under the GNU
+#Public License version 3.
+#Contact: bearzrobotics@gmail.com
+
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or
@@ -55,6 +60,14 @@ def writeNc(Message):
 	Wn.connect((Server, Port))
 	Wn.sendto(str(Message).encode('utf-8'), (Server, Port))
 	Wn.close()
+	
+def writeStatus(Message):
+	Ws = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	Port = 7000
+	StatusServer = '127.0.0.1'
+	Ws.connect((StatusServer, Port))
+	Ws.sendto(str(Message).encode('utf-8'), (StatusServer, Port))
+	Ws.close()
 
 def readDs():
 	# socket.AF_INET, allows use of ipv4
@@ -64,7 +77,7 @@ def readDs():
 	Port = 1110
 	#R.connect((Server, Port))
 	R.bind(('', Port))	
-	R.settimeout(6)
+	R.settimeout(100000)
 	while True:
 		data, addr = R.recvfrom(4096)
 		#data = data.decode('utf-8')		
@@ -80,6 +93,9 @@ def writeDs(Message):
 	W.sendto(str(Message).encode('utf-8'), (Server, Port))
 	W.close()
 
-readDs()
-
+def test():
+	Message = input('->')
+	while Message != 'q':
+			writeStatus(Message)
+			Message = input('->')
 

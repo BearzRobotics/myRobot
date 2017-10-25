@@ -14,6 +14,13 @@ var: RedLed
 
 One of the goals is to get this to work with the qdriverstation both the desktop and phone version. This will allow the robot to be controlled
 from a windows, mac, Linux, bsd, android phone or other operating system that can compile qt version 5.
+=======================================Status LED Program =====================================
+This needs to be started at system boot. (refer to rc.locol) Make sure the procces is forked.  
+
+The program will read for the change at port 7000 and if nessary write on port 7001.
+Read = 7000
+Write = 7001
+
 =======================================Configure reboot=========================================
 This allows anyone in the wheel group to shutdown the computer with out super user. They still
 need to put sudo infront of the command tho.
@@ -42,11 +49,25 @@ Telo: 3 minutes
 There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so much info into comments around my code.
 I wonder will this slow python down?
 
-==============================================================================================
-    Lt_rm =	7	# Left rear motor 
-    Rt_rm =	40	# Right Rear motor
-	Lt_fm =	11	# Left front motor
-	Rt_fm =	38	# Right Front motor
+========================================NET==============================================
+IF using wifi, it must have a connection at startup.
+adding this to /etc/network/interfaces should make it work
+
+auto wlan0
+iface wlan0 inet dhcp
+        wpa-ssid "ssid"
+        wpa-psk "password"
+
+
+======================================= rc.local =============================================
+We need to edit rc.local to get are program to start up with the system
+sudo nano /etc/rc.local
+
+put in the program you wish to have start up. For us it is status.py
+/home/pi/myRobot/src/status.py
+if the program is likely to run in a infinate loop or not exit put '&' and the end to fork the
+process.
+/home/pi/myRobot/src/status.py &
 
 ======================================= Sources ==============================================
 
