@@ -31,7 +31,7 @@ copy bellow lines into '/etc/group'
 %wheel ALL= NOPASSWD: /sbin/shutdown
 %wheel ALL= NOPASSWD: /sbin/reboot
 
- -- or --
+   or
  chmod both to be 6777 to allow non sudo users to acces them 
 =======================================Adb File (Format)=========================================
 X joystick value | Y joystick value | z joystick value | Button 1 | Button 2 | Button 3 | Button 4
