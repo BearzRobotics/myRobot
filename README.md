@@ -1,5 +1,5 @@
 # myRobot
-This is meant to work with (qdriverstation)[https://github.com/FRC-Utilities/QDriverStation]. 
+This is meant to work with [qdriverstation](https://github.com/FRC-Utilities/QDriverStation). 
 
 This is a simple robot project written in python 3.
 
@@ -41,6 +41,12 @@ Telo: 3 minutes
 
 There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so much info into comments around my code.
 I wonder will this slow python down?
+
+==============================================================================================
+    Lt_rm =	7	# Left rear motor 
+    Rt_rm =	40	# Right Rear motor
+	Lt_fm =	11	# Left front motor
+	Rt_fm =	38	# Right Front motor
 
 ======================================= Sources ==============================================
 

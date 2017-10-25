@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or
@@ -11,20 +13,20 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#!/usr/bin/python3
-import os
-import psutil
 
+import linecache
+import time
 
-def reboot():
-	os.system("/sbin/reboot")
-	psutil.disk_usage('/')
+def writeCode():
+	Adb = open('./adb', 'a')
+	Adb.write("This is a tesst")
+
+	Adb.close()
+
+def readCode():
+	count = 1
 	
-def getRam():
-	psutil.virtual_memory()
-	
-def getCpu():
-	psutil.cpu_freq()
+	BegingLine = count + 1	
+	linecache.getline('./adb', BegingLine)
 
-def diskUsage():
-	psutil.disk_usage('/')
+	linecache.clearcache()

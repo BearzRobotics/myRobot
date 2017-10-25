@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or
@@ -11,13 +13,19 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import psutil
 
-def mainTelo():
-	# Creates gloab varible for the telo op def	
-	RunningTelo = True
+
+def reboot():
+	os.system("/sbin/reboot")
+	psutil.disk_usage('/')
 	
-	while RunningTelo == True:
-		print("telo")
-		
-		
+def getRam():
+	psutil.virtual_memory()
+	
+def getCpu():
+	psutil.cpu_freq()
 
+def diskUsage():
+	psutil.disk_usage('/')

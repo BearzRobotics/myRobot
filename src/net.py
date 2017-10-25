@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation, either version 3 of the License, or
@@ -11,10 +13,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#!/usr/bin/python3
 import socket
 import time
-import thread
 
 Server = '192.168.1.68' # Hard coded for now
 # protocol bytes for parsing
@@ -64,7 +64,7 @@ def readDs():
 	Port = 1110
 	#R.connect((Server, Port))
 	R.bind(('', Port))	
-	R.settimeout(5)
+	R.settimeout(6)
 	while True:
 		data, addr = R.recvfrom(4096)
 		#data = data.decode('utf-8')		
