@@ -59,6 +59,7 @@ def teloOp():
 def myCleanUp(cleanMeassage):
 	net.writeNc(cleanMeassage)
 	net.writeStatus('3')
+	gpio.cleanup()
 	sys.exit()
 
 def main():
