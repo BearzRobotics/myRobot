@@ -39,18 +39,18 @@ gpio.setup(Rt_rm, gpio.OUT)
 gpio.setup(Lt_fm, gpio.OUT)
 gpio.setup(Rt_fm, gpio.OUT)
 
-	
 def autonOp():
 	auton.readCode()
 
 def teloOp():
+	net.writeStatus('1')
 	# Creates gloab varible for the telo op def
 	#RunningTelo = True
 
-	#while RunningTelo == True:
-	#	print("telo")
-	ChanList = (Lt_rm, Rt_rm, Lt_fm, Rt_fm)
-	gpio.output(ChanList, gpio.HIGH)
+	while RunningTelo == True:
+		print("telo")
+		ChanList = (Lt_rm, Rt_rm, Lt_fm, Rt_fm)
+		gpio.output(ChanList, gpio.HIGH)
 	
 	time.sleep(60)
 	gpio.cleanup()
@@ -67,23 +67,27 @@ def main():
 	# 1 = telo
 	# 2 = auton
 	# 3 = write mode
-	mode = 1	
+	mode = 1
 
 	if mode == 1:
-		try:		
-			teloOp1()
+		try:
+			teloOp()
 		except:
 			myCleanUp('[ERROR] Could not start teloOp:')
 	elif mode == 2:
-		try:		
+		try:
 			myRobot.autonOp()
 		except:
 			myCleanUp('[ERROR] Could not start autonOp:')
-	else:
-		try:		
+	elif mode == 3:
+		try:
 			auton.writeCode()
 			#net.readDs()
 			pass
 		except:
-			myCleanUp('[ERROR] Could not start writeCode:')	
+			myCleanUp('[ERROR] Could not start writeCode:')
+
+	else:
+		myCleanUp('What did you want me to do, you did not pass in a valid option ')
+
 main()
