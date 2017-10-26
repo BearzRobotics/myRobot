@@ -16,14 +16,17 @@ var: RedLed
 One of the goals is to get this to work with the qdriverstation both the desktop and phone version. This will 
 allow the robot to be controlled
 from a windows, mac, Linux, bsd, android phone or other operating system that can compile qt version 5.
-=======================================Status LED Program =====================================
+
+
+**Status LED Program:**
 This needs to be started at system boot. (refer to rc.locol) Make sure the procces is forked.  
 
 The program will read for the change at port 7000 and if nessary write on port 7001.
 Read = 7000
 Write = 7001
 
-=======================================Configure reboot=========================================
+
+**Configure reboot:**
 This allows anyone in the wheel group to shutdown the computer with out super user. They still
 need to put sudo infront of the command tho.
 copy bellow lines into '/etc/group'
@@ -32,27 +35,26 @@ copy bellow lines into '/etc/group'
 %wheel ALL= NOPASSWD: /sbin/reboot
 
    or
- chmod both to be 6777 to allow non sudo users to acces them 
-=======================================Adb File (Format)=========================================
+ chmod both to be 6777 to allow non sudo users to acces them
+
+ 
+**Adb File (Format):**
 X joystick value | Y joystick value | z joystick value | Button 1 | Button 2 | Button 3 | Button 4
 --------------------------------------------------------------------------------------------------
 1 through -1	 | 1 through -1     | 1 through -1     | T or F   | T or F   | T or F   | T or F
 
-=======================================Competetion rules=======================================
-Rules:
+
+**Competetion rules:**
 Auton: First 20 secs
 Telo: 3 minutes
 
 
+**Complaints agains python:** 
+There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so 
+much info into comments around my code. I wonder will this slow python down?
 
 
-=======================================Complaints agains python ==
-
-There needs to be something like cargo doc, becaue after using rust, I've grown accustom to putting so much 
-info into comments around my code.
-I wonder will this slow python down?
-
-========================================NET=================
+**NET:**
 IF using wifi, it must have a connection at startup.
 adding this to /etc/network/interfaces should make it work
 
@@ -62,7 +64,7 @@ iface wlan0 inet dhcp
         wpa-psk "password"
 
 
-======================================= rc.local ===========
+**rc.local:**
 We need to edit rc.local to get are program to start up with the system
 sudo nano /etc/rc.local
 
@@ -72,8 +74,8 @@ if the program is likely to run in a infinate loop or not exit put '&' and the e
 process.
 /home/pi/myRobot/src/status.py &
 
-======================================= Sources ==========
 
+**Sources:**
 https://pythonhosted.org/triangula/config.html
 
 
