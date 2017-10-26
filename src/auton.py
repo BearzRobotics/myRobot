@@ -21,17 +21,60 @@
 
 import linecache
 import time
+import js
+
 
 def writeCode():
-	Adb = open('./adb', 'a')
-	Adb.write("This is a tesst")
-
+	TimeVar = time.time()
+	FileName = "./adb"
+	
+	Adb = open(FileName, 'a')
+	
+	line = "[" + str(TimeVar) + "\n"
+	Adb.write(line)
+	
+	while TimeVar + 15 > time.time():
+		# This will evenuly have joystick values passed from qdriverstation
+		line = str(js.getAxis('x')) + "," + str(js.getAxis('y')) + "," + str(js.getAxis('z')) + "\n" 
+		Adb.write(line)
+	while TimeVar + 20 > time.time():
+		break
+	
+	Adb.write("]\n")
 	Adb.close()
 
-def readCode():
-	count = 1
+def readCode(recTime):
+	TimeVar = time.time()
+	FileName = "./adb"
 	
-	BegingLine = count + 1	
-	linecache.getline('./adb', BegingLine)
-
+	StartLine = 0
+	EndLine = 0
+	Count = 0
+	
+	RecTimeString = "[" + str(recTime)
+	
+	with open(FileName) as file:
+		for line in file:
+			Count += 1
+			if RecTimeString in line:
+				StartLine = Count
+			if StartLine !=0 and EndLine == 0 and "]" in line:
+				EndLine = Count
+				break
+	Count = 0
+	
+	while TimeVar + 15 > time.time() and Count + StartLine < EndLine -1:
+		Count += 1
+		Line = linecache.getline(FileName, Count + StartLine)
+		LineList = Line.split(',')
+		
+		print(LineList[0] + " " + LineList[1] + " " + LineList[2] )
+	
+	while TimeVar + 15  > time.time():
+		print(0,0,0)
+		
 	linecache.clearcache()
+	
+	
+	
+readCode(1508990571.2707024)

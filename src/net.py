@@ -22,6 +22,7 @@ import socket
 import time
 
 Server = '192.168.1.68' # Hard coded for now
+
 # protocol bytes for parsing
 Test               = 0x01;
 Enabled            = 0x04;
@@ -60,7 +61,7 @@ def writeNc(Message):
 	Wn.connect((Server, Port))
 	Wn.sendto(str(Message).encode('utf-8'), (Server, Port))
 	Wn.close()
-	
+
 def writeStatus(Message):
 	Ws = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	Port = 7000
@@ -76,11 +77,11 @@ def readDs():
 	R = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	Port = 1110
 	#R.connect((Server, Port))
-	R.bind(('', Port))	
+	R.bind(('', Port))
 	R.settimeout(100000)
 	while True:
 		data, addr = R.recvfrom(4096)
-		#data = data.decode('utf-8')		
+		#data = data.decode('utf-8')
 		if not data:
 			break
 		print(data)
@@ -97,5 +98,6 @@ def test():
 	Message = input('->')
 	while Message != 'q':
 			writeStatus(Message)
+			#writeNc(Message)
 			Message = input('->')
 
