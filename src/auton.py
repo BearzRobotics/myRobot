@@ -23,7 +23,6 @@ import linecache
 import time
 import js
 
-
 def writeCode():
 	TimeVar = time.time()
 	FileName = "./adb"
@@ -68,7 +67,7 @@ def readCode(recTime):
 		Line = linecache.getline(FileName, Count + StartLine)
 		LineList = Line.split(',')
 		
-		print(LineList[0] + " " + LineList[1] + " " + LineList[2] )
+		print(float(LineList[0]), float(LineList[1]), float(LineList[2]))
 	
 	while TimeVar + 15  > time.time():
 		print(0,0,0)
@@ -77,4 +76,4 @@ def readCode(recTime):
 	
 	
 	
-readCode(1508990571.2707024)
+#readCode(1508990571.2707024)

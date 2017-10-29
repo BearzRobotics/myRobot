@@ -22,25 +22,42 @@ import sys
 # Custom
 import auton
 import net
+from net import ds
 import utils
 import time
+from PiMotor import Motor
 
 # global variables
-Lt_rm =	7	# Left rear motor
-Rt_rm =	40	# Right Rear motor
-Lt_fm =	11	# Left front motor
-Rt_fm =	38	# Right Front motor
+m1 = Motor("MOTOR1",1)	
+m2  = Motor("MOTOR2",1)	
+m3 = Motor("MOTOR3",1)	
+m4 = Motor("MOTOR4",1)	
 
 gpio.setmode(gpio.BOARD) # uses pin numbers 1 -40
 # setup pins on the pi
 gpio.setwarnings(False)
-gpio.setup(Lt_rm, gpio.OUT)
-gpio.setup(Rt_rm, gpio.OUT)
-gpio.setup(Lt_fm, gpio.OUT)
-gpio.setup(Rt_fm, gpio.OUT)
 
 def autonOp():
-	auton.readCode()
+	auton.writeCode()
+	
+def dBackwords():
+	m1.reverse()
+	m2.reverse()
+	m3.reverse()
+	m4.reverse()
+	net.writeStatus('1')
+	
+def dForword():
+	m1.forward()
+	m2.forward()
+	m3.forward()
+	m4.forword()
+	net.writeStatus('2') # debug code
+	
+def dLeft():
+	net.writeStatus('3')
+def dRight():
+	net.writeStatus('1')
 
 def teloOp():
 	net.writeStatus('1')
@@ -49,12 +66,22 @@ def teloOp():
 
 	while RunningTelo == True:
 		print("telo")
-		ChanList = (Lt_rm, Rt_rm, Lt_fm, Rt_fm)
-		gpio.output(ChanList, gpio.HIGH)
-	
-	time.sleep(60)
-	gpio.cleanup()
-	sys.exit()
+
+		data = ds.readDs()
+		print(data)
+		
+		if data == '1':
+			dBackwords()
+		if data == '2':
+			dForword()
+		if data == '3':
+			dLeft()	
+		if data == '4':
+			dRight()
+		if data == '5':
+			RunningTelo = False
+				
+	myCleanUp()
 
 def myCleanUp(cleanMeassage):
 	net.writeNc(cleanMeassage)
@@ -67,23 +94,23 @@ def main():
 	# 1 = telo
 	# 2 = auton
 	# 3 = write mode
-	mode = 1
-
-	if mode == 1:
+	
+	mode1 = ds.readDs()
+	mode = str(mode1)
+	
+	if mode == '1':
 		try:
 			teloOp()
 		except:
 			myCleanUp('[ERROR] Could not start teloOp:')
-	elif mode == 2:
+	elif mode == '2':
 		try:
 			myRobot.autonOp()
 		except:
 			myCleanUp('[ERROR] Could not start autonOp:')
-	elif mode == 3:
+	elif mode == '3':
 		try:
-			auton.writeCode()
-			#net.readDs()
-			pass
+			net.readDs()
 		except:
 			myCleanUp('[ERROR] Could not start writeCode:')
 

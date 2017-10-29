@@ -35,3 +35,5 @@ def getAxis(axis):
 		net.writeNc("axis z")
 	else:
 		print("error")
+		
+		

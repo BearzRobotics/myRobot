@@ -19,7 +19,6 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import RPi.GPIO as gpio
-import time
 import sys
 import socket
 
@@ -38,8 +37,9 @@ def readSp():		# Read status Packet
 	Rs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	Port = 7000
 	#R.connect((Server, Port))
-	Rs.bind(('', Port))	
+	Rs.bind(('', Port))
 	Rs.settimeout(100000)
+
 	while True:
 		gpio.setmode(gpio.BOARD) # uses pin numbers 1 -40
 		data, addr = Rs.recvfrom(4096)
@@ -68,12 +68,10 @@ def readSp():		# Read status Packet
 	gpio.cleanup()
 	Rs.close()
 
-		
 def cCleanUp():
 		gpio.output(RdPin, gpio.LOW)	
 		gpio.output(GnPin, gpio.LOW)
 		gpio.output(BlPin, gpio.LOW)
 		gpio.cleanup()
-
 
 readSp()
