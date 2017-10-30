@@ -29,9 +29,17 @@ from PiMotor import Motor
 
 # global variables
 m1 = Motor("MOTOR1",1)	
-m2  = Motor("MOTOR2",1)	
+m2 = Motor("MOTOR2",1)	
 m3 = Motor("MOTOR3",1)	
 m4 = Motor("MOTOR4",1)	
+
+#To drive all motors together
+motorAll = PiMotor.LinkedMotors(m1,m2,m3,m4)
+#Names for Individual Arrows
+ab = PiMotor.Arrow(1)
+al = PiMotor.Arrow(2)
+af = PiMotor.Arrow(3) 
+ar = PiMotor.Arrow(4)
 
 gpio.setmode(gpio.BOARD) # uses pin numbers 1 -40
 # setup pins on the pi
