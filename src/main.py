@@ -41,23 +41,37 @@ def autonOp():
 	auton.writeCode()
 	
 def dBackwords():
-	m1.reverse()
-	m2.reverse()
-	m3.reverse()
-	m4.reverse()
+	af.off()
+	ab.on()
+	motorALL.reverse(100)
 	net.writeStatus('1')
+	time.sleep(5)
 	
 def dForword():
-	m1.forward()
-	m2.forward()
-	m3.forward()
-	m4.forword()
+	af.off()
+	motorALL.forward(100)
 	net.writeStatus('2') # debug code
-	
+    time.sleep(5)
+    
 def dLeft():
+	ar.on()
+    al.off()
+    m1.forward(100)
+    m2.forward(100)
+	m3.stop()
+    m4.stop()
 	net.writeStatus('3')
+    time.sleep(5)
+
 def dRight():
+	ar.on()
+    al.off()
+    m3.forward(100)
+    m4.forward(100)
+	m1.stop()
+    m2.stop()
 	net.writeStatus('1')
+    time.sleep(5)
 
 def teloOp():
 	net.writeStatus('1')

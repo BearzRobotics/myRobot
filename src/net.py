@@ -19,6 +19,7 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import socket
+import struct # interpret bytes as packed binary data
 import time
 Server = '192.168.1.68' # Hard coded for now
 
