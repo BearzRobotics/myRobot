@@ -24,62 +24,7 @@ import auton
 import net
 from net import ds
 import utils
-import time
-from PiMotor import Motor
-
-# global variables
-m1 = Motor("MOTOR1",1)	
-m2 = Motor("MOTOR2",1)	
-m3 = Motor("MOTOR3",1)	
-m4 = Motor("MOTOR4",1)	
-
-#To drive all motors together
-motorAll = PiMotor.LinkedMotors(m1,m2,m3,m4)
-#Names for Individual Arrows
-ab = PiMotor.Arrow(1)
-al = PiMotor.Arrow(2)
-af = PiMotor.Arrow(3) 
-ar = PiMotor.Arrow(4)
-
-gpio.setmode(gpio.BOARD) # uses pin numbers 1 -40
-# setup pins on the pi
-gpio.setwarnings(False)
-
-def autonOp():
-	auton.writeCode()
-	
-def dBackwords():
-	af.off()
-	ab.on()
-	motorALL.reverse(100)
-	net.writeStatus('1')
-	time.sleep(5)
-	
-def dForword():
-	af.off()
-	motorALL.forward(100)
-	net.writeStatus('2') # debug code
-    time.sleep(5)
-    
-def dLeft():
-	ar.on()
-    al.off()
-    m1.forward(100)
-    m2.forward(100)
-	m3.stop()
-    m4.stop()
-	net.writeStatus('3')
-    time.sleep(5)
-
-def dRight():
-	ar.on()
-    al.off()
-    m3.forward(100)
-    m4.forward(100)
-	m1.stop()
-    m2.stop()
-	net.writeStatus('1')
-    time.sleep(5)
+import robotControl as roboC
 
 def teloOp():
 	net.writeStatus('1')
@@ -93,23 +38,17 @@ def teloOp():
 		print(data)
 		
 		if data == '1':
-			dBackwords()
+			roboC.dBackwords(100)
 		if data == '2':
-			dForword()
+			roboC.dForword(100)
 		if data == '3':
-			dLeft()	
+			roboC.dLeft(100)	
 		if data == '4':
-			dRight()
+			roboC.dRight(100)
 		if data == '5':
 			RunningTelo = False
 				
-	myCleanUp()
-
-def myCleanUp(cleanMeassage):
-	net.writeNc(cleanMeassage)
-	net.writeStatus('3')
-	gpio.cleanup()
-	sys.exit()
+	utils.myCleanUp()
 
 def main():
 	# mode refers to weather its in telo or auton
@@ -124,19 +63,19 @@ def main():
 		try:
 			teloOp()
 		except:
-			myCleanUp('[ERROR] Could not start teloOp:')
+			utils.myCleanUp('[ERROR] Could not start teloOp:')
 	elif mode == '2':
 		try:
 			myRobot.autonOp()
 		except:
-			myCleanUp('[ERROR] Could not start autonOp:')
+			utils.myCleanUp('[ERROR] Could not start autonOp:')
 	elif mode == '3':
 		try:
 			net.readDs()
 		except:
-			myCleanUp('[ERROR] Could not start writeCode:')
+			utils.myCleanUp('[ERROR] Could not start writeCode:')
 
 	else:
-		myCleanUp('What did you want me to do, you did not pass in a valid option ')
+		utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
 
 main()
