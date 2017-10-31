@@ -22,9 +22,9 @@ import RPi.GPIO as gpio
 import sys
 import socket
 
-RdPin =	37
-GnPin = 35
-BlPin = 33
+RdPin =	40
+GnPin = 38
+BlPin = 32
 
 gpio.setmode(gpio.BOARD) # uses pin numbers 1 -40
 gpio.setwarnings(False)
