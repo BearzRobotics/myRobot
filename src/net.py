@@ -73,7 +73,10 @@ class ds:
 	def __init__(self):
 		pass
 		
-	def readCDs():
+	def readDs():
+		# socket.AF_INET, allows use of ipv4
+		# socket.SOCK_STREAM use tcp packets
+		# socket.SOCK_DGRAM use udp
 		R = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7110
 		R.bind(('', Port))
@@ -82,37 +85,31 @@ class ds:
 				data, addr = R.recvfrom(4096)
 				if not data:
 					break
-				return b'data'
-		R.close()
-		
-	def readDs():
-		# socket.AF_INET, allows use of ipv4
-		# socket.SOCK_STREAM use tcp packets
-		# socket.SOCK_DGRAM use udp
-		R = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		Port = 1110
-		R.bind(('', Port))
-		R.settimeout(100000)
-		while True:
-				data, addr = R.recvfrom(4096)
-				if not data:
-					break
 				return data
 		R.close()
-
-	def writeDs(Message):
-		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		Port = 1150
-		W.connect((Server, Port))
-		W.sendto(str(Message).encode('utf-8'), (Server, Port))
-		W.close()
-	
-	def writeCDs(Message):
+	#Bt stands for Button then the number ofthe controller appaned to it. 
+	#	-- Returns a true or false
+	#Ax stands for joystick Axis
+	#	-- Returns a flout of the joystick or other axis
+	#This protocol jupports 16 buttons and 5 axis at the most. The defualt value is null resulting in a null byte being sent
+	def writeDs(ControlByte, Direction=None, Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax3=None, Ax3=None, Ax4=None, Ax5=None ):
 		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7150
 		W.connect((Server, Port))
-		W.sendto(str(Message).encode('utf-8'), (Server, Port))
+		
+		# For format refer back to https://docs.python.org/3.0/library/struct.html
+		# For debug we'll print our new data
+		print(ControlByte, Direction, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax3, Ax3, Ax4, Ax5)
+		
+		# Format-	C Type	-	Python type	-	Standard Size
+		# c			char	    str len of 1			1
+		# ?			bool		bool					1
+		# f			float		float					4
+		
+		data = pack('cc????????????????fffff', ControlByte, Direction, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax3, Ax3, Ax4, Ax5)
+		W.sendto(data, (Server, Port))
 		W.close()
+
 
 def mode():
 	mode = ds.readDs()
