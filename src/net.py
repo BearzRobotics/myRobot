@@ -42,8 +42,13 @@ class netConsole:
 		R.bind(('', port))
 		R.settimeout(10000000)
 		data, addr = R.recvfrom(4096)
-		decoded = data.decode('utf-8')
-		print (decoded)
+		while True:
+			data, addr = R.recvfrom(4096)
+			data = data.decode('utf-8')	
+			if not data:
+				break
+			return data
+		R.close()
 			
 	def writeNc(self, Message):
 		Wn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -102,7 +107,34 @@ class decrypt:
 	def decryptPacket():
 		DSP = ds.readDs()
 		print(DSP)
-		DECP = unpack("cc????????????????fffff", DSP)[0]  #DECP means De-encrypted Packet
-		print(DECP)
+		# packet has 23 bytes possible
+		DECP = unpack("cc????????????????fffff", DSP)[0]  #DECP means De-encrypted Packet`
+		# Feilds for DECP are 0 -22
+		# This is the table if you wanted to pull a spesific byte
+		#c	ControlByte		DECP[0]
+		#c	Direction		DECP[1]
+		#?	Bt1				DECP[2]
+		#?	Bt2				DECP[3]
+		#?	Bt3				DECP[4]
+		#?	Bt4				DECP[5]
+		#?	Bt5				DECP[6]
+		#?	Bt6				DECP[7]
+		#?	Bt7				DECP[8]
+		#?	Bt8				DECP[9]
+		#?	Bt9				DECP[10]
+		#?	Bt10			DECP[11]
+		#?	Bt11			DECP[12]
+		#?	Bt12			DECP[13]
+		#?	Bt13			DECP[14]
+		#?	Bt14			DECP[15]
+		#?	Bt15			DECP[16]
+		#?	Bt16			DECP[17]
+		#f	Ax1				DECP[18]
+		#f	Ax2				DECP[19]
+		#f	Ax3				DECP[20]
+		#f	Ax4				DECP[21]
+		#f	Ax5				DECP[22]
+		 
+		print(DECP[0])
 		
 #decrypt.decryptPacket()		

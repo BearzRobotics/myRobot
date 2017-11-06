@@ -22,7 +22,7 @@ import sys
 # Custom
 import auton
 import net
-from net import ds
+from net import *
 import utils
 import robotControl as roboC
 
