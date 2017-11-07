@@ -56,26 +56,29 @@ def main():
 	# 2 = auton
 	# 3 = write mode
 	
-	mode1 = ds.readDs()
-	mode = str(mode1)
+	Packet = decrypt.decryptPacket()
+	mode = str(Packet[0])
 	
-	if mode == '1':
-		try:
-			teloOp()
-		except:
-			utils.myCleanUp('[ERROR] Could not start teloOp:')
-	elif mode == '2':
-		try:
-			myRobot.autonOp()
-		except:
-			utils.myCleanUp('[ERROR] Could not start autonOp:')
-	elif mode == '3':
-		try:
-			net.readDs()
-		except:
-			utils.myCleanUp('[ERROR] Could not start writeCode:')
+	if mode == 'E':
+		while True:
+			if mode == '1':
+				try:
+					teloOp()
+				except:
+					utils.myCleanUp('[ERROR] Could not start teloOp:')
+			elif mode == '2':
+				try:
+					myRobot.autonOp()
+				except:
+					utils.myCleanUp('[ERROR] Could not start autonOp:')
+			elif mode == '3':
+				try:
+					net.readDs()
+				except:
+					utils.myCleanUp('[ERROR] Could not start writeCode:')
 
+			else:
+				utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
 	else:
-		utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
-
+		net.writeStatus("Robot is not enabled")
 main()
