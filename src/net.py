@@ -104,21 +104,21 @@ class ds:
 	#Ax stands for joystick Axis
 	#	-- Returns a flout of the joystick or other axis
 	#This protocol jupports 16 buttons and 5 axis at the most. The defualt value is null resulting in a null byte being sent
-	def writeDs(Server,ControlByte, Direction=None, mode='D', Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax2=None, Ax3=None, Ax4=None, Ax5=None ):
+	def writeDs(Server,ControlByte='D'.encode('ascii'), Direction=None, mode='T', Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax0=0, Ax1=0, Ax2=0, Ax3=0, Ax4=0, Ax5=0 ):
 		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7150
 		W.connect((Server, Port))
 		
 		# For format refer back to https://docs.python.org/3.0/library/struct.html
 		# For debug we'll print our new data
-		print(ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax3, Ax2, Ax4, Ax5)
+		print(ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax0, Ax1, Ax3, Ax2, Ax4, Ax5)
 		
 		# Format-	C Type	-	Python type	-	Standard Size
 		# c			char	    str len of 1			1
 		# ?			bool		bool					1
 		# f			float		float					4
 		
-		data = pack('ccc????????????????fffff', ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax2, Ax3, Ax4, Ax5)
+		data = pack('ccc????????????????ffffff', ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax0, Ax1, Ax2, Ax3, Ax4, Ax5)
 		W.sendto(data, (Server, Port))
 		W.close()
 
@@ -146,7 +146,7 @@ class decrypt:
 		#?	Bt4				DECP[7]			T/F											1
 		#?	Bt5				DECP[8]			T/F											1
 		#?	Bt6				DECP[9]			T/F											1
-		#?	Bt7				DECP[10]			T/F											1
+		#?	Bt7				DECP[10]		T/F											1
 		#?	Bt8				DECP[11]		T/F											1
 		#?	Bt9				DECP[12]		T/F											1
 		#?	Bt10			DECP[13]		T/F											1
