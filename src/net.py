@@ -21,7 +21,33 @@
 import socket
 from struct import * # interpret bytes as packed binary data
 import time
-#Server = '192.168.1.68' # Hard coded for now
+import os.path
+import configparser
+
+
+config = configparser.ConfigParser()
+config.sections()
+
+def setup():
+	if os.path.isfile("./net.ini"):
+		print('Config already exist, nothing to do')
+	else:
+		genConfig()
+
+def genConfig():
+	file  = open('myRobot.ini' , 'w')
+	
+	# Creates our sections in the file
+	config.add_section('NET')
+	
+	# Sets the defualts
+	config.set('NET', 'Server', '192.168.1.68')
+	config.set('NET', 'DSport', '7150')
+	config.set('NET', 'RBport', '7100')		
+	config.set('NET', 'NCport', '6666')
+	config.write(file)
+	
+	file.close()
 
 def writeStatus(Message):
 	Ws = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -78,21 +104,21 @@ class ds:
 	#Ax stands for joystick Axis
 	#	-- Returns a flout of the joystick or other axis
 	#This protocol jupports 16 buttons and 5 axis at the most. The defualt value is null resulting in a null byte being sent
-	def writeDs(Server,ControlByte, Direction=None, Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax2=None, Ax3=None, Ax4=None, Ax5=None ):
+	def writeDs(Server,ControlByte, Direction=None, mode='D', Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax2=None, Ax3=None, Ax4=None, Ax5=None ):
 		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7150
 		W.connect((Server, Port))
 		
 		# For format refer back to https://docs.python.org/3.0/library/struct.html
 		# For debug we'll print our new data
-		print(ControlByte, Direction, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax3, Ax2, Ax4, Ax5)
+		print(ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax3, Ax2, Ax4, Ax5)
 		
 		# Format-	C Type	-	Python type	-	Standard Size
 		# c			char	    str len of 1			1
 		# ?			bool		bool					1
 		# f			float		float					4
 		
-		data = pack('cc????????????????fffff', ControlByte, Direction, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax2, Ax3, Ax4, Ax5)
+		data = pack('ccc????????????????fffff', ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax1, Ax2, Ax3, Ax4, Ax5)
 		W.sendto(data, (Server, Port))
 		W.close()
 
@@ -107,33 +133,36 @@ class decrypt:
 		# Debug info
 		print(DSP)
 		# packet has 23 bytes possible
-		DECP = unpack("cc????????????????fffff", DSP)[0]  #DECP means De-encrypted Packet`
-		# Feilds for DECP are 0 -22
+		DECP = unpack("ccc?????????????????ffffff", DSP)[0]  #DECP means De-encrypted Packet`
+		# Feilds for DECP are 0 -25
 		# This is the table if you wanted to pull a spesific byte
-		#c	ControlByte		DECP[0]			E enable, D disable
-		#c	Direction		DECP[1]			F Forword, B Backwrards, R Right, l Left
-		#?	Bt1				DECP[2]			T/F
-		#?	Bt2				DECP[3]			T/F
-		#?	Bt3				DECP[4]			T/F
-		#?	Bt4				DECP[5]			T/F
-		#?	Bt5				DECP[6]			T/F
-		#?	Bt6				DECP[7]			T/F
-		#?	Bt7				DECP[8]			T/F
-		#?	Bt8				DECP[9]			T/F
-		#?	Bt9				DECP[10]		T/F
-		#?	Bt10			DECP[11]		T/F
-		#?	Bt11			DECP[12]		T/F
-		#?	Bt12			DECP[13]		T/F
-		#?	Bt13			DECP[14]		T/F
-		#?	Bt14			DECP[15]		T/F
-		#?	Bt15			DECP[16]		T/F
-		#?	Bt16			DECP[17]		T/F
-		#f	Ax1				DECP[18]		Float
-		#f	Ax2				DECP[19]		Float
-		#f	Ax3				DECP[20]		Float
-		#f	Ax4				DECP[21]		Float
-		#f	Ax5				DECP[22]		Float
-		 
-		return DECP
+		#c	ControlByte		DECP[0]			E enable, D disable							1
+		#c	Direction		DECP[1]			F Forword, B Backwrards, R Right, l Left	1
+		#c	mode			DECP[2]			T for telo, A for auton						1
+		#?	Bt0				DECP[3]			T/F											1
+		#?	Bt1				DECP[4]			T/F											1
+		#?	Bt2				DECP[5]			T/F											1
+		#?	Bt3				DECP[6]			T/F											1
+		#?	Bt4				DECP[7]			T/F											1
+		#?	Bt5				DECP[8]			T/F											1
+		#?	Bt6				DECP[9]			T/F											1
+		#?	Bt7				DECP[10]			T/F											1
+		#?	Bt8				DECP[11]		T/F											1
+		#?	Bt9				DECP[12]		T/F											1
+		#?	Bt10			DECP[13]		T/F											1
+		#?	Bt11			DECP[14]		T/F											1
+		#?	Bt12			DECP[15]		T/F											1
+		#?	Bt13			DECP[16]		T/F											1
+		#?	Bt14			DECP[17]		T/F											1
+		#?	Bt15			DECP[18]		T/F											1
+		#?	Bt16			DECP[19]		T/F											1
+		#f	Ax0				DECP[20]		Float										4
+		#f	Ax1				DECP[21]		Float										4
+		#f	Ax2				DECP[22]		Float										4
+		#f	Ax3				DECP[23]		Float										4
+		#f	Ax4				DECP[24]		Float										4
+		#f	Ax5				DECP[25]		Float										4
+		# 															    Packet size ~=	44
+ 		return DECP
 		
 #decrypt.decryptPacket()		
