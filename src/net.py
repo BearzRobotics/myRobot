@@ -21,7 +21,7 @@
 import socket
 from struct import * # interpret bytes as packed binary data
 import time
-Server = '192.168.1.68' # Hard coded for now
+#Server = '192.168.1.68' # Hard coded for now
 
 def writeStatus(Message):
 	Ws = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -34,7 +34,7 @@ def writeStatus(Message):
 
 class netConsole:
 	
-	def readNc(self):
+	def readNc():
 		R = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		port = 6666
 		R.bind(('', port))
@@ -48,7 +48,7 @@ class netConsole:
 			return data
 		R.close()
 			
-	def writeNc(self, Message):
+	def writeNc(Server, Message):
 		Wn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 6666
 		Wn.connect((Server, Port))
@@ -78,7 +78,7 @@ class ds:
 	#Ax stands for joystick Axis
 	#	-- Returns a flout of the joystick or other axis
 	#This protocol jupports 16 buttons and 5 axis at the most. The defualt value is null resulting in a null byte being sent
-	def writeDs(ControlByte, Direction=None, Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax2=None, Ax3=None, Ax4=None, Ax5=None ):
+	def writeDs(Server,ControlByte, Direction=None, Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax1=None, Ax2=None, Ax3=None, Ax4=None, Ax5=None ):
 		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7150
 		W.connect((Server, Port))

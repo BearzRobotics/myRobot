@@ -19,6 +19,8 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import RPi.GPIO as gpio
 import sys
+import os.path
+import configparser
 # Custom
 import auton
 import net
@@ -26,6 +28,26 @@ from net import *
 import utils
 import robotControl as roboC
 
+
+config = configparser.ConfigParser()
+config.sections()
+
+
+def genConfig():
+	file  = open('myRobot.ini' , 'w')
+	
+	# Creates our sections in the file
+	config.add_section('NET')
+	
+	# Sets the defualts
+	config.set('NET', 'Server', '192.168.1.68')
+	config.set('NET', 'DSport', '7150')
+	config.set('NET', 'RBport', '7100')		
+	config.set('NET', 'NCport', '6666')
+	config.write(file)
+	
+	file.close()
+	
 def teloOp():
 	net.writeStatus('1')
 	# Creates gloab varible for the telo op def
@@ -51,6 +73,12 @@ def teloOp():
 	utils.myCleanUp()
 
 def main():
+	if os.path.isfile("./myRobot.ini"):
+		print('Config already exist, nothing to do')
+	else:
+		genConfig()
+		
+
 	# mode refers to weather its in telo or auton
 	# 1 = telo
 	# 2 = auton
