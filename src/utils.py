@@ -38,7 +38,7 @@ def diskUsage():
 	psutil.disk_usage('/')
 	
 def myCleanUp(cleanMeassage):
-	net.writeNc('192.168.1.68', cleanMeassage)
+	net.netConsole.writeNc('192.168.1.68', cleanMeassage)
 	net.writeStatus('3')
 	gpio.cleanup()
 	sys.exit()

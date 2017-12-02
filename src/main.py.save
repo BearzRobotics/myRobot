@@ -1,0 +1,92 @@
+#!/usr/bin/python3
+
+#KNOW ALL MEN BY THESE PRESENTS: 'i': man [Dakota James Owen Keeler]
+#Copyright this software in the year of our lord 2017 under the GNU
+#Public License version 3.
+#Contact: bearzrobotics@gmail.com
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import RPi.GPIO as gpio
+import sys
+# Custom
+import auton
+import net
+from net import *
+import utils
+import robotControl as roboC
+
+	
+def teloOp():
+	net.writeStatus('1')
+	# Creates gloab varible for the telo op def
+	RunningTelo = True
+
+	while RunningTelo == True:
+
+		robotC.dForward(50)
+		time.sleep(2)
+		
+		if data == '1':
+			roboC.dBackwords(50)
+		if data == '2':
+			roboC.dForword(50)
+		if data == '3':
+			roboC.dLeft(50)	
+		if data == '4':
+			roboC.dRight(50)
+		if data == '5':
+			RunningTelo = False
+				
+	utils.myCleanUp()
+
+def main():
+	net.setup()
+	# mode refers to weather its in telo or auton
+	# 1 = telo
+	# 2 = auton
+	# 3 = write mode
+	
+	Packet = decrypt.decryptPacket(0)
+	ControlByte = Packet
+	print(ControlByte)
+	if ControlByte == b'E':
+		while True:
+			Packet = decrypt.decryptPacket(2)
+			mode = Packet
+			print('This is the mode', mode)
+			if mode == b'T':
+				op = True
+				
+				while op == True:
+					robotC.dForward(50)
+					time.sleep(5)
+					print("we do run this code")
+				except:
+					utils.myCleanUp('[ERROR] Could not start teloOp:')
+			elif mode == b'A':
+				try:
+					myRobot.autonOp()
+				except:
+					utils.myCleanUp('[ERROR] Could not start autonOp:')
+			elif mode == b'O':
+				try:
+					net.readDs()
+				except:
+					utils.myCleanUp('[ERROR] Could not start writeCode:')
+
+			else:
+				utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
+	else:
+		net.writeStatus("Robot is not enabled")
+main()

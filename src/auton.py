@@ -22,6 +22,31 @@
 import linecache
 import time
 import js
+import robotControl as roboC
+
+def hardCoded():
+	
+	startTime = time.time()
+	
+	while startTime <= 15:
+		
+		roboC.dBackwords(75)
+		time.sleep(1)
+		
+		roboC.dForword(75)
+		time.sleep(1)			
+		
+		roboC.dLeft(75)
+		time.sleep(1)	
+					
+		
+		roboC.dRight(75)
+		time.sleep(1)
+		
+	# Once time is past fiften seconds			
+	roboC.killBot()	
+		
+	
 
 def writeCode():
 	TimeVar = time.time()

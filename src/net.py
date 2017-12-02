@@ -101,10 +101,10 @@ class ds:
 		R.close()
 	#Bt stands for Button then the number ofthe controller appaned to it. 
 	#	-- Returns a true or false
-	#Ax stands for joystick Axis
-	#	-- Returns a flout of the joystick or other axis
+	#Ax stands for joystich
+	#of the joystick or other axis
 	#This protocol jupports 16 buttons and 5 axis at the most. The defualt value is null resulting in a null byte being sent
-	def writeDs(Server,ControlByte='D'.encode('ascii'), Direction=None, mode='T', Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax0=0, Ax1=0, Ax2=0, Ax3=0, Ax4=0, Ax5=0 ):
+	def writeDs(Server,mode=b'T', Bt1=None, Bt2=None, Bt3=None, Bt4=None, Bt5=None, Bt6=None, Bt7=None, Bt8=None, Bt9=None, Bt10=None, Bt11=None, Bt12=None, Bt13=None, Bt14=None, Bt15=None, B1t6=None, Ax0=0, Ax1=0, Ax2=0, Ax3=0, Ax4=0, Ax5=0 ):
 		W = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 7150
 		W.connect((Server, Port))
@@ -118,51 +118,18 @@ class ds:
 		# ?			bool		bool					1
 		# f			float		float					4
 		
-		data = pack('ccc????????????????ffffff', ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax0, Ax1, Ax2, Ax3, Ax4, Ax5)
+		data = pack('c????????????????ffffff', ControlByte, Direction, mode, Bt1, Bt2, Bt3, Bt4, Bt5, Bt6, Bt7, Bt8, Bt9, Bt10, Bt11, Bt12, Bt13, Bt14, Bt15, B1t6, Ax0, Ax1, Ax2, Ax3, Ax4, Ax5)
 		W.sendto(data, (Server, Port))
 		W.close()
-
-def mode():
-	mode = ds.readDs()
-	#print(mode)
-	return mode	
 	
 class decrypt:
-	def decryptPacket():
+	def decryptPacket(index):
 		DSP = ds.readDs()
 		# Debug info
 		print(DSP)
+		size = 44
 		# packet has 23 bytes possible
-		DECP = unpack("ccc?????????????????ffffff", DSP)[0]  #DECP means De-encrypted Packet`
-		# Feilds for DECP are 0 -25
-		# This is the table if you wanted to pull a spesific byte
-		#c	ControlByte		DECP[0]			E enable, D disable							1
-		#c	Direction		DECP[1]			F Forword, B Backwrards, R Right, l Left	1
-		#c	mode			DECP[2]			T for telo, A for auton						1
-		#?	Bt0				DECP[3]			T/F											1
-		#?	Bt1				DECP[4]			T/F											1
-		#?	Bt2				DECP[5]			T/F											1
-		#?	Bt3				DECP[6]			T/F											1
-		#?	Bt4				DECP[7]			T/F											1
-		#?	Bt5				DECP[8]			T/F											1
-		#?	Bt6				DECP[9]			T/F											1
-		#?	Bt7				DECP[10]		T/F											1
-		#?	Bt8				DECP[11]		T/F											1
-		#?	Bt9				DECP[12]		T/F											1
-		#?	Bt10			DECP[13]		T/F											1
-		#?	Bt11			DECP[14]		T/F											1
-		#?	Bt12			DECP[15]		T/F											1
-		#?	Bt13			DECP[16]		T/F											1
-		#?	Bt14			DECP[17]		T/F											1
-		#?	Bt15			DECP[18]		T/F											1
-		#?	Bt16			DECP[19]		T/F											1
-		#f	Ax0				DECP[20]		Float										4
-		#f	Ax1				DECP[21]		Float										4
-		#f	Ax2				DECP[22]		Float										4
-		#f	Ax3				DECP[23]		Float										4
-		#f	Ax4				DECP[24]		Float										4
-		#f	Ax5				DECP[25]		Float										4
-		# 															    Packet size ~=	44
- 		return DECP
+		DECP = unpack_from("c?????????????????ffffff", DSP, offset=0)  #DECP means De-encrypted Packet`
+		return DECP[index]
 		
 #decrypt.decryptPacket()		

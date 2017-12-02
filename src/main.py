@@ -25,30 +25,39 @@ import net
 from net import *
 import utils
 import robotControl as roboC
-
+import pygame
+from pygame.locals import * 
 	
 def teloOp():
 	net.writeStatus('1')
-	# Creates gloab varible for the telo op def
-	#RunningTelo = True
+	
+	print('W) Forword')
+	print('S) Backwords')
+	print('A) Left')
+	print('D) Right')
+	print('Q) Quit')
+	
+	while True:
+		data = input('->')
+		if data == 'S' or data == 's':
+			roboC.dBackwords(75)
+			time.sleep(1)
+			roboC.dBackwords(0)
+		if data == 'W' or data == 'w':
+			roboC.dForword(75)
+			time.sleep(1)		
+			roboC.dForword(0)	
+		if data == 'A' or data == 'a':
+			roboC.dLeft(75)
+			time.sleep(1)	
+			roboC.dLeft(0)			
+		if data == 'D' or data == 'd':
+			roboC.dRight(75)
+			time.sleep(1)		
+			roboC.dRight(0)	
+		if data == 'Q' or data == 'q':
+			break
 
-	while RunningTelo == True:
-		print("telo")
-
-		data = ds.readDs()
-		print(data)
-		
-		if data == '1':
-			roboC.dBackwords(50)
-		if data == '2':
-			roboC.dForword(50)
-		if data == '3':
-			roboC.dLeft(50)	
-		if data == '4':
-			roboC.dRight(50)
-		if data == '5':
-			RunningTelo = False
-				
 	utils.myCleanUp()
 
 def main():
@@ -57,30 +66,33 @@ def main():
 	# 1 = telo
 	# 2 = auton
 	# 3 = write mode
-	
-	Packet = decrypt.decryptPacket()
-	mode = str(Packet[0])
-	
-	if mode == 'E':
-		while True:
-			if mode == '1':
-				try:
-					teloOp()
-				except:
-					utils.myCleanUp('[ERROR] Could not start teloOp:')
-			elif mode == '2':
-				try:
-					myRobot.autonOp()
-				except:
-					utils.myCleanUp('[ERROR] Could not start autonOp:')
-			elif mode == '3':
-				try:
-					net.readDs()
-				except:
-					utils.myCleanUp('[ERROR] Could not start writeCode:')
 
-			else:
-				utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
+	#Packet = decrypt.decryptPacket(0)
+	#ControlByte = Packet
+	#print(ControlByte)
+	print("T) = telo")
+	print("A) = auton")
+	print("W) = write mode")
+	mode = input('->')
+
+	if mode == 'T' or mode == 't':
+		try:
+			teloOp()
+		except:
+			utils.myCleanUp('[ERROR] Could not start teloOp:')
+	elif mode == 'A' or mode == 'a':
+		try:
+			autton.hardCoded()
+			#auton.readCode(1508990571.2707024)
+		except:
+			utils.myCleanUp('[ERROR] Could not start autonOp:')
+	elif mode == 'W' or mode == 'w':
+		try:
+			auton.writeCode()
+		except:
+			utils.myCleanUp('[ERROR] Could not start writeCode:')
+
 	else:
-		net.writeStatus("Robot is not enabled")
+			utils.myCleanUp('What did you want me to do, you did not pass in a valid option ')
+
 main()
