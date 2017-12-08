@@ -23,6 +23,7 @@ import psutil
 import RPi.GPIO as gpio
 import sys
 import net
+import time
 
 def reboot():
 	os.system("/sbin/reboot")
@@ -38,7 +39,10 @@ def diskUsage():
 	psutil.disk_usage('/')
 	
 def myCleanUp(cleanMeassage):
-	net.netConsole.writeNc('192.168.1.68', cleanMeassage)
+	net.netConsole.writeNc(cleanMeassage)
 	net.writeStatus('3')
 	gpio.cleanup()
 	sys.exit()
+
+def uSleep(x):
+	time.sleep(x)

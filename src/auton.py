@@ -19,10 +19,8 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import linecache
-import time
-import js
-import robotControl as roboC
+import linecache, time
+import js, utils, robotControl as roboC
 
 def hardCoded():
 	
@@ -32,23 +30,19 @@ def hardCoded():
 		
 		roboC.dBackwords(75)
 		time.sleep(1)
-		
 		roboC.dForword(75)
 		time.sleep(1)			
-		
 		roboC.dLeft(75)
-		time.sleep(1)	
-					
-		
+		time.sleep(1)		
 		roboC.dRight(75)
 		time.sleep(1)
 		
 	# Once time is past fiften seconds			
 	roboC.killBot()	
-		
-	
 
 def writeCode():
+	
+	print("Writing code you got 15 sec by default")
 	TimeVar = time.time()
 	FileName = "./adb"
 	
@@ -59,13 +53,17 @@ def writeCode():
 	
 	while TimeVar + 15 > time.time():
 		# This will evenuly have joystick values passed from qdriverstation
+		roboC.drive(js.getAxis('x'), js.getAxis('y'), js.getAxis('z'))
+		utils.uSleep(.3)
 		line = str(js.getAxis('x')) + "," + str(js.getAxis('y')) + "," + str(js.getAxis('z')) + "\n" 
+		
 		Adb.write(line)
 	while TimeVar + 20 > time.time():
 		break
 	
 	Adb.write("]\n")
 	Adb.close()
+	print("Wrinting complete")
 
 def readCode(recTime):
 	TimeVar = time.time()
@@ -92,13 +90,12 @@ def readCode(recTime):
 		Line = linecache.getline(FileName, Count + StartLine)
 		LineList = Line.split(',')
 		
+		roboC.drive(float(LineList[0]), float(LineList[1]), float(LineList[2]))
 		print(float(LineList[0]), float(LineList[1]), float(LineList[2]))
 	
 	while TimeVar + 15  > time.time():
-		print(0,0,0)
+		roboC.drive(0,0,0)
 		
 	linecache.clearcache()
-	
-	
 	
 #readCode(1508990571.2707024)

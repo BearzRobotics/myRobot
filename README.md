@@ -69,6 +69,35 @@ if the program is likely to run in a infinate loop or not exit put '&' and the e
 process.
 /home/pi/myRobot/src/status.py &
 
+**Custom Packet**
+ccc?????????????????ffffff
+Feilds for DECP are 0 -25
+This is the table if you wanted to pull a spesific byte
+c	mode			DECP[0]			T for telo, A for auton						1
+?	Bt0				DECP[1]			T/F											1
+?	Bt1				DECP[2]			T/F											1
+?	Bt2				DECP[3]			T/F											1
+?	Bt3				DECP[4]			T/F											1
+?	Bt4				DECP[5]			T/F											1
+?	Bt5				DECP[6]			T/F											1
+?	Bt6				DECP[7]			T/F											1
+?	Bt7				DECP[8]			T/F											1
+?	Bt8				DECP[9]			T/F											1
+?	Bt9				DECP[10]		T/F											1
+?	Bt10			DECP[11]		T/F											1
+?	Bt11			DECP[12]		T/F											1
+?	Bt12			DECP[13]		T/F											1
+?	Bt13			DECP[14]		T/F											1
+?	Bt14			DECP[15]		T/F											1
+?	Bt15			DECP[16]		T/F											1
+?	Bt16			DECP[17]		T/F											1
+f	Ax0				DECP[18]		Float										4
+f	Ax1				DECP[19]		Float										4
+f	Ax2				DECP[20]		Float										4
+f	Ax3				DECP[21]		Float										4
+f	Ax4				DECP[22]		Float										4
+f	Ax5				DECP[23]		Float										4
+ 															    Packet size ~=	42
 
 **Sources:**
 https://pythonhosted.org/triangula/config.html

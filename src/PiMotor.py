@@ -65,7 +65,7 @@ class Motor:
             GPIO.output(self.pins['f'],GPIO.HIGH)
             GPIO.output(self.pins['r'],GPIO.LOW)
 
-    def reverse(self,speed):
+    def reverse(self, speed):
         ''' Starts the motor turning in its configured "reverse" direction.
 
         Arguments:
@@ -217,7 +217,6 @@ class Stepper:
         GPIO.output(self.config['c3'],GPIO.LOW)
         GPIO.output(self.config['c4'],GPIO.LOW)
         
-
 
 class Sensor:
     ''' Defines a sensor connected to the sensor pins on the MotorShield

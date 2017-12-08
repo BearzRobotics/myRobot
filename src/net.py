@@ -74,7 +74,8 @@ class netConsole:
 			return data
 		R.close()
 			
-	def writeNc(Server, Message):
+	def writeNc(Message):
+		Server='192.168.1.68'
 		Wn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		Port = 6666
 		Wn.connect((Server, Port))

@@ -17,18 +17,12 @@
 
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import RPi.GPIO as gpio
-import sys
+import RPi.GPIO as gpio, sys
 # Custom
-import auton
-import net
+import auton, net, utils, js, robotControl as roboC
 from net import *
-import utils
-import robotControl as roboC
-import pygame
-from pygame.locals import * 
 	
-def teloOp():
+def keyTeloOp():
 	net.writeStatus('1')
 	
 	print('W) Forword')
@@ -40,13 +34,13 @@ def teloOp():
 	while True:
 		data = input('->')
 		if data == 'S' or data == 's':
-			roboC.dBackwords(75)
+			roboC.dBackwards(75)
 			time.sleep(1)
-			roboC.dBackwords(0)
+			roboC.dBackwards(0)
 		if data == 'W' or data == 'w':
-			roboC.dForword(75)
+			roboC.dForward(75)
 			time.sleep(1)		
-			roboC.dForword(0)	
+			roboC.dForward(0)	
 		if data == 'A' or data == 'a':
 			roboC.dLeft(75)
 			time.sleep(1)	
@@ -59,7 +53,16 @@ def teloOp():
 			break
 
 	utils.myCleanUp()
+	
+def teloOp():
+	net.writeStatus('1')
 
+	while True:
+		roboC.drive(js.getAxis('x'), js.getAxis('y'), js.getAxis('z'))
+		utils.uSleep(.3)
+	utils.myCleanUp()
+
+	
 def main():
 	net.setup()
 	# mode refers to weather its in telo or auton
@@ -70,6 +73,9 @@ def main():
 	#Packet = decrypt.decryptPacket(0)
 	#ControlByte = Packet
 	#print(ControlByte)
+	net.netConsole.writeNc("T) = telo")
+	net.netConsole.writeNc("A) = auton")
+	net.netConsole.writeNc("W) = write mode")
 	print("T) = telo")
 	print("A) = auton")
 	print("W) = write mode")
@@ -78,17 +84,21 @@ def main():
 	if mode == 'T' or mode == 't':
 		try:
 			teloOp()
+			#keyTeloOp()
 		except:
 			utils.myCleanUp('[ERROR] Could not start teloOp:')
+			print("Couldn't start telo")
 	elif mode == 'A' or mode == 'a':
 		try:
-			autton.hardCoded()
-			#auton.readCode(1508990571.2707024)
+			#autton.hardCoded()
+			auton.readCode(1512767575.821822)
+			main()
 		except:
 			utils.myCleanUp('[ERROR] Could not start autonOp:')
 	elif mode == 'W' or mode == 'w':
 		try:
 			auton.writeCode()
+			main()
 		except:
 			utils.myCleanUp('[ERROR] Could not start writeCode:')
 
